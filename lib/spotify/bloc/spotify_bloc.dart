@@ -31,8 +31,17 @@ class SpotifyBloc extends Bloc<SpotifyEvent, SpotifyState> {
     if(event is SpotifyPlaylistsLoad){
       yield* _mapSpotifyPlaylistsLoadedToState();
     }
+    if(event is GotoPage){
+      yield* _mapGotoPage(event);
+    }
   }
 
+  Stream<SpotifyState> _mapGotoPage(GotoPage event)async*{
+
+      yield PlayListInPageTwo(event.page);
+
+
+  }
   Stream<SpotifyState> _mapSpotifyStarted() async* {
     // check if has tokens
 

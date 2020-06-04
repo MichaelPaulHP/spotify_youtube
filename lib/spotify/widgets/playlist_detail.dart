@@ -2,19 +2,23 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loginfirebaseapp/player/bloc/player_bloc.dart';
+import 'package:loginfirebaseapp/screens/nav/navigation_bloc.dart';
 import 'package:loginfirebaseapp/spotify/playlist_bloc/playlist_bloc.dart';
 import 'package:loginfirebaseapp/spotify/playlist_bloc/playlist_event.dart';
 import 'package:loginfirebaseapp/spotify/playlist_bloc/playlist_state.dart';
 import 'package:loginfirebaseapp/spotify/tdo/playlist.dart';
+import 'package:loginfirebaseapp/spotify/widgets/SpotifyButton.dart';
 import 'package:loginfirebaseapp/spotify/widgets/track_card.dart';
 import 'package:loginfirebaseapp/youtube/widgets/modal_videos.dart';
+import 'package:lottie/lottie.dart';
 import 'package:palette_generator/palette_generator.dart';
 
 class PlaylistDetail extends StatelessWidget  {
   final Playlist _playlist;
   final PaletteGenerator _palette;
   //final PlayerBloc _playerBloc;
-
+  final double heightStatusBar=30;
+  final double heightImage=90;
   PlaylistDetail({Playlist playlist,PaletteGenerator paletteGenerator})
   : _playlist=playlist,
         _palette=paletteGenerator
@@ -29,26 +33,37 @@ class PlaylistDetail extends StatelessWidget  {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return Container(
-      height: size.height-60,
+    return WillPopScope(
+      onWillPop: ()=>goToHomeBool(context),
       child: Scaffold(
 
 
         body: CustomScrollView(
 
           slivers: <Widget>[
-            SliverAppBar(
+            /*SliverAppBar(
               elevation: 0,
               pinned: true,
-
-            ),
-
+              actions: <Widget>[
+                closeIconButton(context)
+              ],
+              title: Text(_playlist.name),
+              backgroundColor: _palette.colors.elementAt(0),
+            ),*/
             SliverPersistentHeader(
+              pinned: true,
               delegate: CustomSliverDelegate(
-                expandedHeight: (size.height * .4) - kToolbarHeight,
-                child: header(),
+                expandedHeight: heightImage+heightStatusBar,
+                child: _buildHeaderWithCove(context),
               ),
             ),
+            SliverPersistentHeader(
+              delegate: CustomSliverDelegate(
+                expandedHeight: 80,
+                child: header(context),
+              ),
+            ),
+
             listOfTrack(),
 
 
@@ -63,106 +78,104 @@ class PlaylistDetail extends StatelessWidget  {
 
 
   }
-
-
+  void goToHome(context){
+    BlocProvider.of<NavigationBloc>(context).add(NavGoHome());
+  }
+  Future<bool> goToHomeBool(context) async{
+    BlocProvider.of<NavigationBloc>(context).add(NavGoHome());
+    return false;
+  }
   Widget listOfTrack(){
 
     return BlocProvider<PlaylistBloc>(
       create: (BuildContext context) => PlaylistBloc(_playlist)..add(PlaylistStarted()),
-      child:BlocListener<PlaylistBloc, PlaylistState>(
-        listener: (BuildContext context,PlaylistState state) {
-          if(state is PlaylistTrackLoading){
-            Scaffold.of(context)
-              ..hideCurrentSnackBar()
-              ..showSnackBar(
-                SnackBar(
-                  content: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [Text('Lloading'), Icon(Icons.language)],
-                  ),
-                  backgroundColor: Colors.yellow,
-                ),
-              );
-          }
-          if(state is PlaylistTrackLoaded){
-            showModalBottomSheet(
-                context: context,
-                builder: (context){
-                  return ListViewVideos(videos: state.videos);
-                }
-            );
-          }
-        },
-        child: Container(
-          child: BlocBuilder<PlaylistBloc, PlaylistState>(
-              condition:(previoSate,state){
-                if(state is PlaylistTrackLoading|| state is PlaylistTrackLoaded){
-                  return false;
-                }
-                return true;
-              },
-              builder: (BuildContext context,PlaylistState state) {
-                if(state is PlaylistIsLoading){
-                  return SliverFillRemaining(
-                    child: Text("loading"),
-                  );
-                }
-                if(state is PlaylistLoaded){
-                  return sliverListOfTracks(state);
-                }
+      child:Container(
+        child: BlocBuilder<PlaylistBloc, PlaylistState>(
 
-                if( state is PlaylistNotLoaded ){
-                  return SliverFillRemaining(
-                    child: Text(state.error),
-                  );
-                }
-                if( state is PlaylistTrackNotLoaded){
-                  return SliverFillRemaining(
-                    child: Text(state.error),
-                  );
-                }
-
-
+            builder: (BuildContext context,PlaylistState state) {
+              if(state is PlaylistIsLoading){
                 return SliverFillRemaining(
-                  child: Text("nothing"),
+                  child:  Center(
+                    child: Lottie.asset(
+                      'assets/lottie/1446-bikingiscool.json',
+                      width: 200,
+                      height: 200,
+                      fit: BoxFit.fill,
+                    ),
+                  ),
                 );
               }
-          ),
+              if(state is PlaylistLoaded){
+                return sliverListOfTracks(state);
+              }
+
+              if( state is PlaylistNotLoaded ){
+                return SliverFillRemaining(
+                  child: Text(state.error),
+                );
+              }
+
+              if( state is PlaylistTrackNotLoaded){
+                return SliverFillRemaining(
+                  child: Text(state.error),
+                );
+              }
+
+              return SliverFillRemaining(
+                child: Text("nothing"),
+              );
+            }
         ),
       )
     );
   }
+  Widget _buildHeaderWithCove(context){
 
-  Widget header(){
     return Container(
-      height: 120,
+      decoration: BoxDecoration(
+          gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [_palette.colors.elementAt(0), Colors.transparent])),
+      child:SizedBox(
+        height: heightImage+heightStatusBar,
+        child: Stack(
+          children: <Widget>[
+            Positioned(
+              top:heightStatusBar ,
+              right: 25,
+              child: closeIconButton(context),
+            ),
+            Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                child: FadeInImage(
+                  height: heightImage,
+                  width: 80,
+                  placeholder:  AssetImage("assets/images/spotifyLogoTransparent.png"),
+                  image: CachedNetworkImageProvider(_playlist.imagesUrls[0]),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
 
-      child: Row(
-        mainAxisAlignment:MainAxisAlignment.start,
-        crossAxisAlignment:CrossAxisAlignment.center ,
+          ],
+        ) ,
+      )
+    );
+
+  }
+  Widget header(context){
+    return Container(
+      height: 80,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-
-          FadeInImage(
-            height: 90,
-            width: 80,
-            placeholder:  AssetImage("assets/images/spotifyLogoTransparent.png"),
-            image: CachedNetworkImageProvider(_playlist.imagesUrls[0]),
-          ),
-
-          Container(
-            height: 120,
-            width: 100,
-            child: ListView.builder (
-                scrollDirection:  Axis.horizontal,
-                itemCount: _palette.colors.length,
-                itemBuilder: (context,index){
-                  return Container(
-                      height: 100,
-                      width: 100,
-                      color:_palette.colors.elementAt(index)
-                  );
-                }),
-          )
+          Text(_playlist.name),
+          Text(_playlist.description),
+          SpotifyButton(_playlist.uri)
 
         ],
       ),
@@ -185,10 +198,7 @@ class PlaylistDetail extends StatelessWidget  {
   Widget sliverListOfTracks(PlaylistLoaded state){
 
     SliverChildBuilderDelegate ss= SliverChildBuilderDelegate(
-      // La función builder devuelve un ListTile con un título que
-      // muestra el índice del elemento actual
           (context, index) => TrackCard( track: state.tracks.elementAt(index)),
-      // Construye 1000 ListTiles
       childCount:  state.tracks.length,
     );
     return SliverList(
@@ -197,21 +207,17 @@ class PlaylistDetail extends StatelessWidget  {
   }
 
 
-  Widget closeIcon(context){
-    return Positioned(
-      top: 60,
-      right: 20,
-      child: IconButton(
+  Widget closeIconButton(context){
+    return IconButton(
         icon: Icon(
           Icons.close,
-          color: Colors.white,
-          size: 40,
+          size: 35,
         ),
         onPressed: () {
-          Navigator.pop(context);
+          goToHome(context);
         },
-      ),
-    );
+      );
+    
   }
 }
 class CustomSliverDelegate extends SliverPersistentHeaderDelegate {

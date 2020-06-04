@@ -20,3 +20,12 @@ class PlayerVideoSelected extends PlayerEvent{
 
     Video get video => _video;
 }
+
+class PlayerVideoPause extends PlayerEvent{
+
+}
+class PlayerVideoPlay extends PlayerEvent{}
+
+class PlayerVideoEnded extends PlayerEvent{}
+
+class PlayerHistoryLoad extends PlayerEvent{}

@@ -23,7 +23,7 @@ class ThemeBloc extends Bloc<ThemeType, ThemeState> {
         yield ThemeState(ThemeType.DARK, darkTheme);
         break;
       case ThemeType.LIGHT:
-        yield ThemeState(ThemeType.LIGHT, ThemeData.light());
+        yield ThemeState(ThemeType.LIGHT, lightTheme);
         break;
       case ThemeType.TOGGLE:
         yield toggleTheme();

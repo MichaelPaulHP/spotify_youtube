@@ -18,3 +18,10 @@ class SpotifyTokenRefreshed extends SpotifyEvent{
 class SpotifyPlaylistsLoad extends SpotifyEvent{
 
 }
+class GotoPage extends SpotifyEvent{
+  final int _page;
+
+  GotoPage(this._page);
+
+  int get page => _page;
+}

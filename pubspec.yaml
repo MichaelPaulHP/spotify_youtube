@@ -46,8 +46,12 @@ dev_dependencies:
   test: any
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: "^0.7.3"
 
-
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/icon432.jpg"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -61,10 +65,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+    - assets/images/spotify_logo.png
     - assets/images/spotifyLogoTransparent.png
     - assets/gifs/loading-line.gif
     - assets/lottie/1446-bikingiscool.json
+    - assets/lottie/loading_t_point.json
+    - assets/lottie/swipe.json
+    - assets/lottie/video-content.json
+    - assets/lottie/video-icon.json
+    - assets/lottie/51-preloader.json
+    - assets/lottie/653-loading-line.json
     - assets/lottie/22896-loading-animation.json
+    - assets/lottie/happy.json
+    - assets/lottie/sad.json
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 

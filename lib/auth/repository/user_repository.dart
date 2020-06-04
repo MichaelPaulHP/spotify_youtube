@@ -27,7 +27,9 @@ class UserRepository {
       password: password,
     );
   }
-
+  Future<void> signInAnonymously() {
+    return _firebaseAuth.signInAnonymously();
+  }
   Future<void> signUp({String email, String password}) async {
     return await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
@@ -48,6 +50,7 @@ class UserRepository {
   }
 
   Future<String> getUser() async {
-    return (await _firebaseAuth.currentUser()).email;
+    return (await _firebaseAuth.currentUser()).uid;
   }
+
 }

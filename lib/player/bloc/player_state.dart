@@ -1,11 +1,6 @@
 import 'package:loginfirebaseapp/youtube/model/video.dart';
 
 class PlayerState{
-  List<Video> history=List<Video>();
-
-  void addVideoPlayed(Video video){
-    this.history.add(video);
-  }
 
 }
 class PlayerStarted extends PlayerState{}
@@ -34,3 +29,7 @@ class PlayerVideoStartLoad extends PlayerState{
 
   Video get video => _video;
 }
+class PlayerVideoPlaying extends PlayerState{
+
+}
+class PlayerVideoPaused extends PlayerState{}

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loginfirebaseapp/auth/auth_bloc.dart';
 import 'package:loginfirebaseapp/auth/repository/user_repository.dart';
 import 'package:loginfirebaseapp/player/bloc/player_bloc.dart';
+import 'package:loginfirebaseapp/player/bloc/player_event.dart';
 import 'package:loginfirebaseapp/screens/auth_method_screen.dart';
 import 'package:loginfirebaseapp/screens/home_screen.dart';
 import 'package:loginfirebaseapp/screens/spotify_auth_screen.dart';
@@ -11,6 +12,8 @@ import 'package:loginfirebaseapp/splash/splash_bloc.dart';
 import 'package:loginfirebaseapp/spotify/bloc/spotify_bloc.dart';
 import 'package:loginfirebaseapp/spotify/bloc/spotify_event.dart';
 import 'package:loginfirebaseapp/spotify_authorization/bloc/spotify_authorization_bloc.dart';
+
+import 'nav/navigation_bloc.dart';
 
 class SplashScreen extends StatelessWidget {
   final UserRepository _userRepository;
@@ -39,7 +42,10 @@ class SplashScreen extends StatelessWidget {
                   create: (BuildContext context) => SpotifyBloc()..add(SpotifyStarted()),
                 ),
                 BlocProvider<PlayerBloc>(
-                  create: (BuildContext context) => PlayerBloc(),
+                  create: (BuildContext context) => PlayerBloc()..add(PlayerHistoryLoad()),
+                ),
+                BlocProvider<NavigationBloc>(
+                  create: (BuildContext context) => NavigationBloc(),
                 ),
               ],
               child:HomeScreen()

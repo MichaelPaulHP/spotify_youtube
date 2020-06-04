@@ -61,8 +61,8 @@ class TokensRequester {
     try {
       http.Response res = await http.post(_URL, body: body, headers: header);
       int status = res.statusCode;
+      var json = jsonDecode(res.body);
       if(status==200){
-        var json = jsonDecode(res.body);
         return Tokens.fromJson(json);
       }
       print("RESPOINSEESS");
@@ -70,7 +70,7 @@ class TokensRequester {
       print("\n");
       print(res.body);
       //throw Exception( [res.statusCode,res.body]);
-      throw Exception( res.body);
+      throw Exception( json["error_description"]);
       /*print('Response status: ${res.statusCode}');
       print('Response body: ${res.body}');*/
 

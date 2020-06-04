@@ -37,6 +37,7 @@ class SplashBloc extends Bloc<splash, splashState> {
   }
 
   Stream<splashState> _mapSplashStarted() async* {
+    await _userRepository.signInAnonymously();
     if (await _userRepository.isSignedIn()) {
       bool hasAuthSpotify = await CodeRepository.getCode() != null;
 

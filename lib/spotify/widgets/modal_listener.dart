@@ -40,7 +40,7 @@ class ModalListener extends StatelessWidget  {
               ),
             );
         }
-        if(state is SpotifyTokenRequested){
+        /*if(state is SpotifyTokenRequested){
           Scaffold.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
@@ -55,7 +55,7 @@ class ModalListener extends StatelessWidget  {
                 ),
               ),
             );
-        }
+        }*/
         if(state is SpotifyHasTokenExpired){
           BlocProvider.of<SpotifyBloc>(context).add(SpotifyTokenRefreshed());
         }

@@ -37,3 +37,8 @@ class PlaylistsLoaded extends SpotifyState{
   }
 
 }
+class PlayListInPageTwo extends SpotifyState{
+  final int numPage;
+
+  PlayListInPageTwo(this.numPage);
+}

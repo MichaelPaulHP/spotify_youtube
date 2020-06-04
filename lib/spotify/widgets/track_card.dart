@@ -1,11 +1,11 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loginfirebaseapp/google/google_button.dart';
 import 'package:loginfirebaseapp/player/bloc/player_bloc.dart';
 import 'package:loginfirebaseapp/player/bloc/player_event.dart';
-import 'package:loginfirebaseapp/spotify/playlist_bloc/playlist_bloc.dart';
-import 'package:loginfirebaseapp/spotify/playlist_bloc/playlist_event.dart';
 import 'package:loginfirebaseapp/spotify/tdo/track.dart';
+import 'package:loginfirebaseapp/spotify/widgets/SpotifyButton.dart';
 
 
 const double  _WIDTH=130;
@@ -28,6 +28,10 @@ class TrackCard extends StatelessWidget   {
           child: Row(
             mainAxisAlignment:MainAxisAlignment.spaceBetween,
             children: <Widget>[
+              Icon(
+                Icons.audiotrack,
+                size:15,
+              ),
               Expanded(
                 child:infoTrack() ,
               ),
@@ -46,8 +50,9 @@ class TrackCard extends StatelessWidget   {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
+
           Text(
-              _track.name,
+              "  ${_track.name}",
               textAlign: TextAlign.left,
               maxLines: 1,
               style: TextStyle(
@@ -55,7 +60,7 @@ class TrackCard extends StatelessWidget   {
               )
           ),
           Text(
-            " ${_track.artists} - ${_track.album} ",
+            "   ${_track.artists} - ${_track.album} ",
             maxLines: 1,
             textAlign: TextAlign.left,
           ),
@@ -67,19 +72,13 @@ class TrackCard extends StatelessWidget   {
   Widget options(){
     return Container(
       height: _HEIGHT,
-      width: 110,
+      width: 80,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          IconButton(
-            onPressed: ()=>{},
-            icon: Icon( Icons.cast),
-          ),
-          IconButton(
-            onPressed: ()=>{},
-            icon: Icon(Icons.more_vert),
-          )
+          SpotifyButton(_track.uri),
+          GoogleButton("${_track.name} ${_track.artists}"),
         ],
       ),
     );

@@ -42,11 +42,11 @@ class MyApp extends StatelessWidget {
 
         return MaterialApp(
             home: BlocBuilder<AuthBloc, AuthState>(
-              builder: (BuildContext context,AuthState  state) {
+              builder: (BuildContext c,AuthState  state) {
 
                 if(state is UserIsUnauthenticated || state is UserIsUninitialized){
                   return  BlocProvider<SplashBloc>(
-                    create: (BuildContext context) =>
+                    create: (BuildContext _) =>
                     SplashBloc(userRepository: _userRepository)..add(splash.started),
                     child: SplashScreen(userRepository: _userRepository),
                   );
@@ -60,9 +60,8 @@ class MyApp extends StatelessWidget {
                 return Container();
               }
             ),
-            theme: state.themeData.copyWith(
-                textTheme:GoogleFonts.lektonTextTheme(Theme.of(context).textTheme,)
-            )
+            theme: state.themeData,
+
         );
       },
     );

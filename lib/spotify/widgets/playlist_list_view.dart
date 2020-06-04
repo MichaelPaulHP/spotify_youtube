@@ -32,12 +32,12 @@ class PlaylistListView extends StatelessWidget {
 
   Widget getTitle() {
     return Padding(
-        padding: const EdgeInsets.fromLTRB(8.0, 8, 0, 10),
+        padding: const EdgeInsets.fromLTRB(10.0, 20, 0, 20),
         child: Text(this._title,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 18.0,
+              fontSize: 24.0,
             )));
   }
 

@@ -30,10 +30,14 @@ class VideoCard extends StatelessWidget {
                 height: _HEIGHT - 40,
                 width: _WIDTH,
                 placeholder:
-                    AssetImage("assets/images/spotifyLogoTransparent.png"),
+                    AssetImage("e"),
                 image: CachedNetworkImageProvider(_video.thumbnail),
               ),
-              _buildVideoInfo(),
+              InkWell(
+                onTap: openYoutube,
+                child:_buildVideoInfo(),
+              )
+
             ],
           )),
     );
@@ -65,7 +69,7 @@ class VideoCard extends StatelessWidget {
             maxLines: 1,
           ),
           Text(
-            _video.channelTitle,
+            _video.channelTitle?? "",
             maxLines: 1,
             textAlign: TextAlign.left,
           ),

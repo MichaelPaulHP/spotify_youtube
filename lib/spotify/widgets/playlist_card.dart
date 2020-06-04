@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loginfirebaseapp/player/bloc/player_bloc.dart';
+import 'package:loginfirebaseapp/screens/nav/navigation_bloc.dart';
 import 'package:loginfirebaseapp/spotify/tdo/playlist.dart';
 import 'package:loginfirebaseapp/spotify/widgets/playlist_detail.dart';
 import 'package:lottie/lottie.dart';
@@ -23,7 +24,7 @@ class PlayListCard extends StatelessWidget {
     return InkWell(
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
-      onTap: () => _onTap(context),
+      onTap: () => goToPlayListDetail(context),
       child: Container(
           height: _HEIGHT,
           width: _WIDTH,
@@ -72,6 +73,12 @@ class PlayListCard extends StatelessWidget {
   }
 
   void showModal() {}
+
+  void goToPlayListDetail(context) async{
+    PaletteGenerator palette =
+        await _generatePalette(_playlist.imagesUrls[0]);
+    BlocProvider.of<NavigationBloc>(context).add(NavGoToPlaylistDetail(palette,_playlist));
+  }
 
   void _onTap(context) async {
 
