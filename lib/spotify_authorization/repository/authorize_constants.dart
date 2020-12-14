@@ -9,8 +9,8 @@ class AuthorizeConstants {
       ' user-library-read';
 
   static String getURL() {
-    const myCliendId="faa6a7d064024d18b2c365da30d1fabc";
-
+    //const myCliendId="faa6a7d064024d18b2c365da30d1fabc";
+    const myCliendId="7fecc0ccb0ae4009a7b4b00c040d291d";
 
     String url='https://accounts.spotify.com/authorize' +
         '?response_type=code' +

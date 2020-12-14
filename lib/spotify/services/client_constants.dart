@@ -1,4 +1,4 @@
 class ClientConstants {
-  static const String ID="faa6a7d064024d18b2c365da30d1fabc";
-  static const String SECRET="8f79c253d3234212825cf2296226a752";
+  static const String ID="7fecc0ccb0ae4009a7b4b00c040d291d";
+  static const String SECRET="fe4924413be6476aa423aab9a9bd41b1";
 }
